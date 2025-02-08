@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="A reminder list page to help you keep track of your daily tasks.">
     <title>Reminder List</title>
-    <link rel="icon" href="https://upload.wikimedia.org/wikipedia/commons/3/3f/Logo_Web_Highlighted.png" type="image/png"> <!-- Tab Icon -->
+    <link rel="icon" href="https://cdn.discordapp.com/attachments/1300396455705575474/1337707426249572403/icons8-favicon-94.png?ex=67a86c9f&is=67a71b1f&hm=4e10bce3c2ac8fb25e51ff67e49f7bb2f9a476cb6fe02eae21606d7a02ebb9ea&" type="image/png"> <!-- New Tab Icon -->
     <style>
         /* Global Styles */
         body {
@@ -50,6 +50,17 @@
             color: #ddd;
         }
 
+        .lock-screen-content input {
+            padding: 10px;
+            margin: 10px 0;
+            width: 80%;
+            background: #444;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
         .lock-screen-content button {
             padding: 15px;
             background: #444;
@@ -64,23 +75,6 @@
         .lock-screen-content button:hover {
             background: #555;
             transform: scale(1.05);
-        }
-
-        /* Explosion effect */
-        @keyframes explosion {
-            0% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.5); opacity: 0.6; }
-            100% { transform: scale(0); opacity: 0; }
-        }
-
-        .explosion {
-            position: absolute;
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(255, 0, 0, 0.6), rgba(255, 255, 255, 0));
-            animation: explosion 1s ease-out;
-            z-index: 1000;
         }
 
         /* Main Content */
@@ -161,20 +155,15 @@
         }
     </style>
     <script>
-        // Password screen (new method with explosion effect)
+        // Password screen with username and password validation
         function unlockPage() {
-            var password = prompt("Enter the password to continue:");
-            if (password === "1234") {
+            var username = document.getElementById("username").value;
+            var password = document.getElementById("password").value;
+            if (username === "admin" && password === "1234") {
                 document.getElementById("content").style.display = "block";
                 document.getElementById("lock-screen").style.display = "none";
             } else {
-                var explosion = document.createElement('div');
-                explosion.classList.add('explosion');
-                document.body.appendChild(explosion);
-                setTimeout(function() {
-                    explosion.remove();
-                }, 1000);
-                alert("Incorrect password! Please try again.");
+                alert("Incorrect username or password! Please try again.");
             }
         }
 
@@ -182,65 +171,11 @@
         function toggleTaskCompletion(taskId) {
             var task = document.getElementById(taskId);
             task.classList.toggle('completed');
-            saveTasks(); // Save tasks to localStorage
-        }
-
-        // Edit task functionality
-        function editTask(taskId) {
-            var task = document.getElementById(taskId);
-            var newText = prompt("Edit your task:", task.textContent.trim());
-            if (newText !== null && newText !== "") {
-                task.firstChild.textContent = newText;
-                saveTasks(); // Save tasks to localStorage
-            }
-        }
-
-        // Load tasks from localStorage
-        function loadTasks() {
-            var tasks = JSON.parse(localStorage.getItem('tasks'));
-            if (tasks) {
-                tasks.forEach((task, index) => {
-                    var taskElement = document.getElementById('task' + index);
-                    if (task.completed) {
-                        taskElement.classList.add('completed');
-                        taskElement.querySelector('input').checked = true;
-                    }
-                });
-            }
-        }
-
-        // Save tasks to localStorage
-        function saveTasks() {
-            var tasks = [];
-            document.querySelectorAll('.reminder-item').forEach((taskElement, index) => {
-                tasks.push({
-                    text: taskElement.textContent.trim(),
-                    completed: taskElement.classList.contains('completed')
-                });
-            });
-            localStorage.setItem('tasks', JSON.stringify(tasks));
-        }
-
-        // Export tasks to .txt file
-        function exportToTxt() {
-            var tasks = [];
-            document.querySelectorAll('.reminder-item').forEach((taskElement, index) => {
-                var taskText = taskElement.textContent.trim();
-                if (taskElement.classList.contains('completed')) {
-                    taskText = "[Done] " + taskText;
-                }
-                tasks.push(taskText);
-            });
-            var textFile = new Blob([tasks.join("\n")], { type: 'text/plain' });
-            var link = document.createElement('a');
-            link.href = URL.createObjectURL(textFile);
-            link.download = "task_list.txt";
-            link.click();
         }
 
         // On page load
         window.onload = function () {
-            loadTasks();
+            document.getElementById("lock-screen").style.display = "flex";  // Display password screen on load
         };
     </script>
 </head>
@@ -249,8 +184,10 @@
     <!-- Loading Screen -->
     <div id="lock-screen">
         <div class="lock-screen-content">
-            <h2>Please click the button to unlock</h2>
-            <button onclick="unlockPage()">Unlock</button>
+            <h2>Please enter your username and password to continue</h2>
+            <input type="text" id="username" placeholder="Username" />
+            <input type="password" id="password" placeholder="Password" />
+            <button onclick="unlockPage()">Login</button>
         </div>
     </div>
 
@@ -265,37 +202,30 @@
             <ul class="reminder-list">
                 <li id="task0" class="reminder-item">
                     <span>Wake up and stretch for 5 minutes</span>
-                    <button onclick="editTask('task0')">Edit</button>
                     <input type="checkbox" onclick="toggleTaskCompletion('task0')" />
                 </li>
                 <li id="task1" class="reminder-item">
                     <span>Drink a glass of water</span>
-                    <button onclick="editTask('task1')">Edit</button>
                     <input type="checkbox" onclick="toggleTaskCompletion('task1')" />
                 </li>
                 <li id="task2" class="reminder-item">
                     <span>Check your schedule for the day</span>
-                    <button onclick="editTask('task2')">Edit</button>
                     <input type="checkbox" onclick="toggleTaskCompletion('task2')" />
                 </li>
                 <li id="task3" class="reminder-item">
                     <span>Complete your main task for today</span>
-                    <button onclick="editTask('task3')">Edit</button>
                     <input type="checkbox" onclick="toggleTaskCompletion('task3')" />
                 </li>
                 <li id="task4" class="reminder-item">
                     <span>Take a break every 2 hours</span>
-                    <button onclick="editTask('task4')">Edit</button>
                     <input type="checkbox" onclick="toggleTaskCompletion('task4')" />
                 </li>
                 <li id="task5" class="reminder-item">
                     <span>Stay active, take a walk or do some exercise</span>
-                    <button onclick="editTask('task5')">Edit</button>
                     <input type="checkbox" onclick="toggleTaskCompletion('task5')" />
                 </li>
                 <li id="task6" class="reminder-item">
                     <span>Meditate for 10 minutes</span>
-                    <button onclick="editTask('task6')">Edit</button>
                     <input type="checkbox" onclick="toggleTaskCompletion('task6')" />
                 </li>
             </ul>
@@ -308,7 +238,6 @@
                 <a href="https://linkedin.com" target="_blank">LinkedIn</a>
                 <a href="https://github.com" target="_blank">GitHub</a>
             </div>
-            <button onclick="exportToTxt()">Export Task List to .txt</button>
         </footer>
     </div>
 
