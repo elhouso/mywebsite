@@ -5,83 +5,99 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="A reminder list page to help you keep track of your daily tasks.">
     <title>Reminder List</title>
-    <link rel="icon" href="https://cdn.discordapp.com/attachments/1300396455705575474/1337707426249572403/icons8-favicon-94.png?ex=67a86c9f&is=67a71b1f&hm=4e10bce3c2ac8fb25e51ff67e49f7bb2f9a476cb6fe02eae21606d7a02ebb9ea&" type="image/png"> <!-- New Tab Icon -->
+    <link rel="icon" href="https://cdn.discordapp.com/attachments/1300396455705575474/1337707426249572403/icons8-favicon-94.png?ex=67a86c9f&is=67a71b1f&hm=4e10bce3c2ac8fb25e51ff67e49f7bb2f9a476cb6fe02eae21606d7a02ebb9ea&" type="image/png">
     <style>
         /* Global Styles */
         body {
             font-family: 'Arial', sans-serif;
             margin: 0;
             padding: 0;
-            background: linear-gradient(135deg, #2e2e2e, #1f1f1f); /* Dark gradient background */
+            background: linear-gradient(135deg, #111, #333);
             color: #fff;
             height: 100vh;
-            overflow-x: hidden;
-            text-align: center;
-        }
-
-        /* Password Screen Redesign */
-        #lock-screen {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
+            overflow: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
-            background: rgba(0, 0, 0, 0.8);
-            animation: fadeIn 1s ease-out;
-            z-index: 999;
+        }
+
+        /* Lock Screen Container */
+        #lock-screen {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            width: 100%;
         }
 
         .lock-screen-content {
             text-align: center;
-            background: rgba(0, 0, 0, 0.7);
-            padding: 40px;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.7);
-            animation: slideIn 1s ease-out;
+            background: rgba(0, 0, 0, 0.6);
+            padding: 50px;
+            border-radius: 15px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.7);
+            transform: scale(0.9);
+            animation: zoomIn 1.2s ease-out forwards;
         }
 
         .lock-screen-content h2 {
-            font-size: 1.5rem;
-            margin-bottom: 20px;
-            font-weight: bold;
-            color: #ddd;
+            font-size: 2rem;
+            color: #ffb300;
+            font-weight: 600;
+            margin-bottom: 30px;
+            letter-spacing: 2px;
         }
 
         .lock-screen-content input {
-            padding: 10px;
-            margin: 10px 0;
-            width: 80%;
-            background: #444;
+            padding: 15px;
+            width: 300px;
+            margin: 15px 0;
+            background: rgba(255, 255, 255, 0.1);
             color: white;
             border: none;
-            border-radius: 8px;
-            font-size: 1rem;
+            border-radius: 10px;
+            font-size: 1.2rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            transition: background 0.3s ease;
+        }
+
+        .lock-screen-content input:focus {
+            background: rgba(255, 255, 255, 0.3);
         }
 
         .lock-screen-content button {
-            padding: 15px;
-            background: #444;
+            padding: 15px 40px;
+            background: #ff6600;
             color: white;
             border: none;
-            border-radius: 8px;
+            border-radius: 10px;
+            font-size: 1.3rem;
             cursor: pointer;
-            font-size: 1.2rem;
-            transition: transform 0.3s ease;
+            transition: transform 0.2s ease, background 0.3s ease;
         }
 
         .lock-screen-content button:hover {
-            background: #555;
+            background: #e65c00;
             transform: scale(1.05);
+        }
+
+        /* Animation for the login box */
+        @keyframes zoomIn {
+            from {
+                transform: scale(0.9);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
         }
 
         /* Main Content */
         #content {
             display: none;
             padding: 20px;
-            margin-top: 60px;
         }
 
         header {
@@ -144,15 +160,6 @@
                 opacity: 1;
             }
         }
-
-        @keyframes slideIn {
-            from {
-                transform: translateY(-50px);
-            }
-            to {
-                transform: translateY(0);
-            }
-        }
     </style>
     <script>
         // Password screen with username and password validation
@@ -181,10 +188,10 @@
 </head>
 <body>
 
-    <!-- Loading Screen -->
+    <!-- Lock Screen -->
     <div id="lock-screen">
         <div class="lock-screen-content">
-            <h2>Please enter your username and password to continue</h2>
+            <h2>Login to Your Reminder List</h2>
             <input type="text" id="username" placeholder="Username" />
             <input type="password" id="password" placeholder="Password" />
             <button onclick="unlockPage()">Login</button>
