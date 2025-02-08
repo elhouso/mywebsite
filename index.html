@@ -4,20 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="About Me page showcasing my interests, background, and skills.">
-    <title>TEST</title>
+    <title>About Me</title>
     <style>
         /* Global Styles */
         body {
             font-family: 'Arial', sans-serif;
             margin: 0;
             padding: 0;
-            background: linear-gradient(135deg, #6a11cb, #2575fc);
+            background: linear-gradient(135deg, #2e2e2e, #1f1f1f); /* Dark gradient background */
             color: #fff;
-            overflow-x: hidden;
             height: 100vh;
+            overflow-x: hidden;
         }
 
-        /* Login Screen */
+        /* Loading Screen */
         #lock-screen {
             position: absolute;
             width: 100%;
@@ -27,57 +27,60 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            backdrop-filter: blur(5px);
-            background: rgba(0, 0, 0, 0.7);
+            background: rgba(0, 0, 0, 0.8);
             animation: fadeIn 1s ease-out;
+            z-index: 999;
         }
 
         .login-container {
-            background: rgba(0, 0, 0, 0.8);
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            background: rgba(0, 0, 0, 0.7);
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.7);
             text-align: center;
             width: 300px;
             animation: slideIn 1s ease-out;
         }
 
         .login-container h2 {
+            font-size: 1.5rem;
             margin-bottom: 20px;
-            font-size: 1.8rem;
             font-weight: bold;
+            color: #ddd;
         }
 
         .login-container input {
             width: 100%;
             padding: 15px;
             margin: 10px 0;
-            border-radius: 10px;
-            border: 1px solid #ddd;
-            font-size: 1rem;
+            border-radius: 8px;
+            border: 1px solid #444;
+            font-size: 1.1rem;
             outline: none;
             background: #333;
-            color: white;
+            color: #fff;
             transition: all 0.3s ease;
         }
 
         .login-container input:focus {
-            border-color: #2575fc;
+            border-color: #444;
+            background: #444;
         }
 
         .login-container button {
             width: 100%;
             padding: 15px;
-            background: #2575fc;
+            background: #444;
             color: white;
             border: none;
-            border-radius: 10px;
+            border-radius: 8px;
             cursor: pointer;
             font-size: 1.2rem;
             transition: transform 0.3s ease;
         }
 
         .login-container button:hover {
+            background: #555;
             transform: scale(1.05);
         }
 
@@ -101,7 +104,7 @@
 
         header p {
             font-size: 1.2rem;
-            color: #d3d3d3;
+            color: #ddd;
         }
 
         .section {
@@ -138,7 +141,7 @@
         }
 
         footer {
-            background-color: #2575fc;
+            background-color: #444;
             color: white;
             padding: 1rem;
             text-align: center;
@@ -180,29 +183,29 @@
     </style>
     <script>
         function checkPassword() {
-            var password = prompt("Enter the password to access this page:");
+            var password = document.getElementById('password-field').value;
             if (password === "1234") {
                 document.getElementById("content").style.display = "block";
                 document.getElementById("lock-screen").style.display = "none";
             } else {
                 alert("Incorrect password! Please try again.");
-                window.location.reload(); // Reload the page if password is incorrect
+                document.getElementById('password-field').value = ''; // Clear input field
             }
         }
     </script>
 </head>
-<body onload="checkPassword()">
+<body>
 
-    <!-- Login Screen -->
+    <!-- Loading Screen -->
     <div id="lock-screen">
         <div class="login-container">
-            <h2>Enter Password</h2>
+            <h2>Please enter the password to continue</h2>
             <input type="password" id="password-field" placeholder="Password" />
             <button onclick="checkPassword()">Login</button>
         </div>
     </div>
 
-    <!-- Content Section -->
+    <!-- Main Content Section -->
     <div id="content">
         <header>
             <h1>About Me</h1>
