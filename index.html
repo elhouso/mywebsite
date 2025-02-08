@@ -3,162 +3,149 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="A reminder list page to help you keep track of your daily tasks.">
-    <title>(Name Coming Soon)</title>
+    <meta name="description" content="Windows 10 inspired reminder list and login page.">
+    <title>Reminder List</title>
     <link rel="icon" href="https://cdn.discordapp.com/attachments/1300396455705575474/1337707426249572403/icons8-favicon-94.png?ex=67a86c9f&is=67a71b1f&hm=4e10bce3c2ac8fb25e51ff67e49f7bb2f9a476cb6fe02eae21606d7a02ebb9ea&" type="image/png">
     <style>
         /* Global Styles */
         body {
-            font-family: 'Arial', sans-serif;
             margin: 0;
             padding: 0;
-            background: linear-gradient(135deg, #111, #333);
-            color: #fff;
+            background: #1a1a1a;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             overflow: hidden;
+        }
+
+        /* Desktop-like Background */
+        .desktop {
+            background: #333;
+            width: 80%;
+            height: 80%;
             display: flex;
             justify-content: center;
             align-items: center;
-        }
-
-        /* Lock Screen Container */
-        #lock-screen {
+            border-radius: 10px;
+            box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.8);
             position: relative;
+        }
+
+        /* Windows 10 Login Screen */
+        .login-window {
+            background: #2c2f3f;
+            width: 400px;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
-            height: 100%;
-            width: 100%;
+            box-sizing: border-box;
+            animation: fadeIn 1s ease-out;
         }
 
-        .lock-screen-content {
-            text-align: center;
-            background: rgba(0, 0, 0, 0.6);
-            padding: 50px;
-            border-radius: 15px;
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.7);
-            transform: scale(0.9);
-            animation: zoomIn 1.2s ease-out forwards;
-        }
-
-        .lock-screen-content h2 {
+        .login-window h2 {
+            color: #325ffe;
             font-size: 2rem;
-            color: #325ffe; /* Updated color */
-            font-weight: 600;
-            margin-bottom: 30px;
-            letter-spacing: 2px;
+            margin-bottom: 20px;
         }
 
-        .lock-screen-content input {
-            padding: 15px;
-            width: 300px;
-            margin: 15px 0;
-            background: rgba(255, 255, 255, 0.1);
+        .login-window input {
+            padding: 12px;
+            width: 100%;
+            margin: 10px 0;
+            background: #444;
+            color: white;
+            border: 1px solid #555;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+        }
+
+        .login-window input:focus {
+            background: #555;
+        }
+
+        .login-window button {
+            padding: 12px 25px;
+            background: #325ffe;
             color: white;
             border: none;
-            border-radius: 10px;
-            font-size: 1.2rem;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-            transition: background 0.3s ease;
-        }
-
-        .lock-screen-content input:focus {
-            background: rgba(255, 255, 255, 0.3);
-        }
-
-        .lock-screen-content button {
-            padding: 15px 40px;
-            background: #325ffe; /* Updated color */
-            color: white;
-            border: none;
-            border-radius: 10px;
-            font-size: 1.3rem;
+            border-radius: 5px;
+            font-size: 1.1rem;
             cursor: pointer;
-            transition: transform 0.2s ease, background 0.3s ease;
+            transition: background-color 0.3s, transform 0.2s;
         }
 
-        .lock-screen-content button:hover {
-            background: #2747b7; /* Slightly darker shade of blue */
+        .login-window button:hover {
+            background: #2747b7;
             transform: scale(1.05);
         }
 
-        /* Animation for the login box */
-        @keyframes zoomIn {
-            from {
-                transform: scale(0.9);
-                opacity: 0;
-            }
-            to {
-                transform: scale(1);
-                opacity: 1;
-            }
-        }
-
-        /* Main Content */
-        #content {
-            display: none;
-            padding: 20px;
-        }
-
-        header {
-            text-align: center;
-            padding: 3rem;
-            animation: fadeIn 1.5s ease-out;
-        }
-
-        header h1 {
-            font-size: 3rem;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.6);
-            color: #325ffe; /* Updated color */
-        }
-
-        header p {
-            font-size: 1.2rem;
-            color: #ddd;
-        }
-
-        .reminder-list {
-            list-style-type: none;
-            padding: 0;
-        }
-
-        .reminder-item {
-            margin: 15px 0;
-            padding: 15px;
-            background: rgba(255, 255, 255, 0.1);
+        /* Windows 10 Style Window */
+        .window {
+            background: #2c2f3f;
             border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-            animation: fadeIn 2s ease-out;
-            font-size: 1.2rem;
-            color: #ddd;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            width: 600px;
+            height: 500px;
+            position: absolute;
+            display: flex;
+            flex-direction: column;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            visibility: hidden;
+            animation: slideIn 1s ease-in-out forwards;
+        }
+
+        /* Window Header */
+        .window-header {
+            background: #212529;
+            padding: 10px;
+            color: white;
+            font-size: 1.5rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            border-radius: 10px 10px 0 0;
         }
 
-        .completed {
-            text-decoration: line-through;
-            color: #bbb;
-        }
-
-        /* Accent Color on Some Buttons */
-        .accent-button {
-            background-color: #325ffe;
-            color: white;
-            padding: 12px 35px;
-            border: none;
-            border-radius: 8px;
+        .window-header .close-btn {
             cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.2s ease;
+            color: #ccc;
+            font-size: 1.2rem;
+            border: none;
+            background: none;
         }
 
-        .accent-button:hover {
-            background-color: #2747b7;
-            transform: scale(1.05);
+        /* App Icons */
+        .app-icon {
+            width: 80px;
+            height: 80px;
+            background-color: #325ffe;
+            border-radius: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 15px;
+            cursor: pointer;
+            transition: transform 0.2s ease;
         }
 
-        /* Animations */
+        .app-icon:hover {
+            transform: scale(1.1);
+        }
+
+        .app-icon img {
+            width: 40px;
+            height: 40px;
+        }
+
+        /* Animation for login and window */
         @keyframes fadeIn {
             from {
                 opacity: 0;
@@ -167,82 +154,85 @@
                 opacity: 1;
             }
         }
+
+        @keyframes slideIn {
+            from {
+                transform: translate(-50%, -50%) scale(0.8);
+                visibility: hidden;
+            }
+            to {
+                transform: translate(-50%, -50%) scale(1);
+                visibility: visible;
+            }
+        }
     </style>
     <script>
-        // Password screen with username and password validation
+        // Function to unlock the page after successful login
         function unlockPage() {
             var username = document.getElementById("username").value;
             var password = document.getElementById("password").value;
+
             if (username === "admin" && password === "1234") {
                 document.getElementById("content").style.display = "block";
-                document.getElementById("lock-screen").style.display = "none";
+                document.getElementById("login-window").style.display = "none";
             } else {
                 alert("Incorrect username or password! Please try again.");
             }
         }
 
-        // Task List (Checkbox functionality)
-        function toggleTaskCompletion(taskId) {
-            var task = document.getElementById(taskId);
-            task.classList.toggle('completed');
+        // Function to open the task list window
+        function openWindow() {
+            document.getElementById("task-window").style.visibility = "visible";
         }
 
-        // On page load
+        // Function to close the task list window
+        function closeWindow() {
+            document.getElementById("task-window").style.visibility = "hidden";
+        }
+
+        // On page load, display login screen
         window.onload = function () {
-            document.getElementById("lock-screen").style.display = "flex";  // Display password screen on load
+            document.getElementById("login-window").style.display = "flex";
         };
     </script>
 </head>
 <body>
 
-    <!-- Lock Screen -->
-    <div id="lock-screen">
-        <div class="lock-screen-content">
-            <h2>Enter the password</h2>
+    <!-- Desktop Background -->
+    <div class="desktop">
+
+        <!-- Login Window -->
+        <div id="login-window" class="login-window">
+            <h2>Login to Your Reminder List</h2>
             <input type="text" id="username" placeholder="Username" />
             <input type="password" id="password" placeholder="Password" />
             <button onclick="unlockPage()">Login</button>
         </div>
-    </div>
 
-    <!-- Main Content Section -->
-    <div id="content">
-        <header>
-            <h1>Your Daily Reminder List</h1>
-            <p>null (soon)</p>
-        </header>
+        <!-- Apps (Icons) -->
+        <div class="app-icons">
+            <div class="app-icon" onclick="openWindow()">
+                <img src="https://img.icons8.com/ios/452/task.png" alt="Task Icon" />
+            </div>
+        </div>
 
-        <div class="container">
-            <ul class="reminder-list">
-                <li id="task0" class="reminder-item">
-                    <span>reminderOne</span>
-                    <input type="checkbox" onclick="toggleTaskCompletion('task0')" />
-                </li>
-                <li id="task1" class="reminder-item">
-                    <span>reminderTwo</span>
-                    <input type="checkbox" onclick="toggleTaskCompletion('task1')" />
-                </li>
-                <li id="task2" class="reminder-item">
-                    <span>reminderThree</span>
-                    <input type="checkbox" onclick="toggleTaskCompletion('task2')" />
-                </li>
-                <li id="task3" class="reminder-item">
-                    <span>reminderFour</span>
-                    <input type="checkbox" onclick="toggleTaskCompletion('task3')" />
-                </li>
-                <li id="task4" class="reminder-item">
-                    <span>reminderFive</span>
-                    <input type="checkbox" onclick="toggleTaskCompletion('task4')" />
-                </li>
-                <li id="task5" class="reminder-item">
-                    <span>reminderSix</span>
-                    <input type="checkbox" onclick="toggleTaskCompletion('task5')" />
-                </li>
-                <li id="task6" class="reminder-item">
-                    <span>reminderSeven</span>
-                    <input type="checkbox" onclick="toggleTaskCompletion('task6')" />
-                </li>
-            </ul>
+        <!-- Reminder Window (hidden initially) -->
+        <div id="task-window" class="window">
+            <div class="window-header">
+                <span>Reminder List</span>
+                <button class="close-btn" onclick="closeWindow()">X</button>
+            </div>
+            <div class="window-content">
+                <ul style="list-style-type: none; padding: 20px;">
+                    <li><input type="checkbox" /> Wake up and stretch for 5 minutes</li>
+                    <li><input type="checkbox" /> Drink a glass of water</li>
+                    <li><input type="checkbox" /> Check your schedule for the day</li>
+                    <li><input type="checkbox" /> Complete your main task for today</li>
+                    <li><input type="checkbox" /> Take a break every 2 hours</li>
+                    <li><input type="checkbox" /> Stay active, take a walk or do some exercise</li>
+                    <li><input type="checkbox" /> Meditate for 10 minutes</li>
+                </ul>
+            </div>
         </div>
     </div>
 
