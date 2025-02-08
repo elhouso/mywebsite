@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="About Me page showcasing my interests, background, and skills.">
-    <title>About Me</title>
+    <meta name="description" content="A reminder list page to help you keep track of your daily tasks.">
+    <title>Reminder List</title>
     <style>
         /* Global Styles */
         body {
@@ -15,6 +15,7 @@
             color: #fff;
             height: 100vh;
             overflow-x: hidden;
+            text-align: center;
         }
 
         /* Loading Screen */
@@ -84,10 +85,33 @@
             transform: scale(1.05);
         }
 
-        /* Content Section */
+        /* Music Controls */
+        #music-controls {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+        }
+
+        #music-controls button {
+            padding: 10px;
+            background: #444;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin-left: 10px;
+        }
+
+        /* Main Content */
         #content {
             display: none;
             padding: 20px;
+            margin-top: 60px;
         }
 
         header {
@@ -107,37 +131,20 @@
             color: #ddd;
         }
 
-        .section {
-            margin: 30px 0;
-            padding: 20px;
+        .reminder-list {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .reminder-item {
+            margin: 15px 0;
+            padding: 15px;
             background: rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
+            border-radius: 10px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
             animation: fadeIn 2s ease-out;
-        }
-
-        .section h2 {
-            font-size: 2rem;
-            color: #2575fc;
-            margin-bottom: 15px;
-        }
-
-        .section p {
-            font-size: 1.1rem;
-            line-height: 1.6;
-        }
-
-        .section img {
-            max-width: 300px;
-            width: 100%;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            margin-top: 15px;
-            transition: transform 0.3s ease;
-        }
-
-        .section img:hover {
-            transform: scale(1.05);
+            font-size: 1.2rem;
+            color: #ddd;
         }
 
         footer {
@@ -148,18 +155,6 @@
             position: fixed;
             width: 100%;
             bottom: 0;
-        }
-
-        .social-links a {
-            text-decoration: none;
-            color: white;
-            margin: 0 10px;
-            font-size: 1.5rem;
-            transition: transform 0.3s ease;
-        }
-
-        .social-links a:hover {
-            transform: scale(1.2);
         }
 
         /* Animations */
@@ -182,11 +177,28 @@
         }
     </style>
     <script>
+        // Music Controls
+        var audio = new Audio('track1.mp3');  // Set your first track here
+        var isMuted = false;
+
+        function toggleMute() {
+            isMuted = !isMuted;
+            audio.muted = isMuted;
+            document.getElementById("mute-btn").textContent = isMuted ? "Unmute" : "Mute";
+        }
+
+        function playMusic(track) {
+            audio.src = track;
+            audio.play();
+        }
+
+        // Check password function
         function checkPassword() {
             var password = document.getElementById('password-field').value;
             if (password === "1234") {
                 document.getElementById("content").style.display = "block";
                 document.getElementById("lock-screen").style.display = "none";
+                audio.play();  // Start playing music once logged in
             } else {
                 alert("Incorrect password! Please try again.");
                 document.getElementById('password-field').value = ''; // Clear input field
@@ -205,42 +217,34 @@
         </div>
     </div>
 
+    <!-- Music Controls -->
+    <div id="music-controls">
+        <button id="mute-btn" onclick="toggleMute()">Mute</button>
+        <button onclick="playMusic('track1.mp3')">Play Track 1</button>
+        <button onclick="playMusic('track2.mp3')">Play Track 2</button>
+    </div>
+
     <!-- Main Content Section -->
     <div id="content">
         <header>
-            <h1>About Me</h1>
-            <p>Welcome to my personal website!</p>
+            <h1>Your Daily Reminder List</h1>
+            <p>Scan the QR code to access this page at any time!</p>
         </header>
 
         <div class="container">
-            <section class="section">
-                <h2>Introduction</h2>
-                <p>Hello! I'm [Your Name], a passionate [Your Profession]. I love creating, learning, and exploring new things. I specialize in [Your Skills/Interests], and my journey in this field has been an exciting adventure so far. Below you'll find a little more about me and what I do.</p>
-            </section>
-
-            <section class="section">
-                <h2>My Background</h2>
-                <p>With a background in [Your Education/Experience], I've had the opportunity to work on exciting projects that have shaped who I am today. My journey has taught me the value of perseverance, creativity, and collaboration. I have had the privilege of working with amazing people and learning from them every step of the way.</p>
-            </section>
-
-            <section class="section">
-                <h2>Skills & Interests</h2>
-                <p>I'm proficient in [List Your Skills or Technologies]. I am always looking for ways to improve and grow. In my free time, I enjoy [Your Hobbies/Interests], which help me recharge and stay inspired.</p>
-            </section>
-
-            <section class="section">
-                <h2>Get in Touch</h2>
-                <p>If you want to learn more about my work or just want to chat, feel free to reach out! I'd love to connect with you.</p>
-            </section>
-
-            <section class="section">
-                <h2>My Photo</h2>
-                <img src="your-photo.jpg" alt="Your Photo">
-            </section>
+            <ul class="reminder-list">
+                <li class="reminder-item">✔️ Wake up and stretch for 5 minutes</li>
+                <li class="reminder-item">✔️ Drink a glass of water</li>
+                <li class="reminder-item">✔️ Check your schedule for the day</li>
+                <li class="reminder-item">✔️ Complete your main task for today</li>
+                <li class="reminder-item">✔️ Take a break every 2 hours</li>
+                <li class="reminder-item">✔️ Stay active, take a walk or do some exercise</li>
+                <li class="reminder-item">✔️ Meditate for 10 minutes</li>
+            </ul>
         </div>
 
         <footer>
-            <p>&copy; 2025 [Your Name]. All Rights Reserved.</p>
+            <p>&copy; 2025 Your Reminder App. All Rights Reserved.</p>
             <div class="social-links">
                 <a href="https://twitter.com" target="_blank">Twitter</a>
                 <a href="https://linkedin.com" target="_blank">LinkedIn</a>
