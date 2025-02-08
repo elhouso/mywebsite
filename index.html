@@ -18,7 +18,7 @@
             text-align: center;
         }
 
-        /* Loading Screen */
+        /* Improved Password Screen */
         #lock-screen {
             position: absolute;
             width: 100%;
@@ -85,28 +85,6 @@
             transform: scale(1.05);
         }
 
-        /* Music Controls */
-        #music-controls {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 100;
-        }
-
-        #music-controls button {
-            padding: 10px;
-            background: #444;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 1rem;
-            margin-left: 10px;
-        }
-
         /* Main Content */
         #content {
             display: none;
@@ -147,6 +125,11 @@
             color: #ddd;
         }
 
+        .completed {
+            text-decoration: line-through;
+            color: #bbb;
+        }
+
         footer {
             background-color: #444;
             color: white;
@@ -177,33 +160,64 @@
         }
     </style>
     <script>
-        // Music Controls
-        var audio = new Audio('track1.mp3');  // Set your first track here
-        var isMuted = false;
-
-        function toggleMute() {
-            isMuted = !isMuted;
-            audio.muted = isMuted;
-            document.getElementById("mute-btn").textContent = isMuted ? "Unmute" : "Mute";
-        }
-
-        function playMusic(track) {
-            audio.src = track;
-            audio.play();
-        }
-
-        // Check password function
+        // Password screen
         function checkPassword() {
             var password = document.getElementById('password-field').value;
             if (password === "1234") {
                 document.getElementById("content").style.display = "block";
                 document.getElementById("lock-screen").style.display = "none";
-                audio.play();  // Start playing music once logged in
             } else {
                 alert("Incorrect password! Please try again.");
                 document.getElementById('password-field').value = ''; // Clear input field
             }
         }
+
+        // Task List (Checkbox functionality)
+        function toggleTaskCompletion(taskId) {
+            var task = document.getElementById(taskId);
+            task.classList.toggle('completed');
+            saveTasks(); // Save tasks to localStorage
+        }
+
+        // Load tasks from localStorage
+        function loadTasks() {
+            var tasks = JSON.parse(localStorage.getItem('tasks'));
+            if (tasks) {
+                tasks.forEach((task, index) => {
+                    var taskElement = document.getElementById('task' + index);
+                    if (task.completed) {
+                        taskElement.classList.add('completed');
+                        taskElement.querySelector('input').checked = true;
+                    }
+                });
+            }
+        }
+
+        // Save tasks to localStorage
+        function saveTasks() {
+            var tasks = [];
+            document.querySelectorAll('.reminder-item').forEach((taskElement, index) => {
+                tasks.push({
+                    text: taskElement.textContent,
+                    completed: taskElement.classList.contains('completed')
+                });
+            });
+            localStorage.setItem('tasks', JSON.stringify(tasks));
+        }
+
+        // Edit tasks (localStorage workaround)
+        function editTask(index) {
+            var newTask = prompt('Edit task:', document.querySelectorAll('.reminder-item')[index].textContent);
+            if (newTask !== null) {
+                document.querySelectorAll('.reminder-item')[index].textContent = newTask;
+                saveTasks(); // Save tasks to localStorage
+            }
+        }
+
+        // On page load
+        window.onload = function () {
+            loadTasks();
+        };
     </script>
 </head>
 <body>
@@ -217,13 +231,6 @@
         </div>
     </div>
 
-    <!-- Music Controls -->
-    <div id="music-controls">
-        <button id="mute-btn" onclick="toggleMute()">Mute</button>
-        <button onclick="playMusic('track1.mp3')">Play Track 1</button>
-        <button onclick="playMusic('track2.mp3')">Play Track 2</button>
-    </div>
-
     <!-- Main Content Section -->
     <div id="content">
         <header>
@@ -233,13 +240,34 @@
 
         <div class="container">
             <ul class="reminder-list">
-                <li class="reminder-item">✔️ Wake up and stretch for 5 minutes</li>
-                <li class="reminder-item">✔️ Drink a glass of water</li>
-                <li class="reminder-item">✔️ Check your schedule for the day</li>
-                <li class="reminder-item">✔️ Complete your main task for today</li>
-                <li class="reminder-item">✔️ Take a break every 2 hours</li>
-                <li class="reminder-item">✔️ Stay active, take a walk or do some exercise</li>
-                <li class="reminder-item">✔️ Meditate for 10 minutes</li>
+                <li id="task0" class="reminder-item">
+                    <input type="checkbox" onclick="toggleTaskCompletion('task0')" /> Wake up and stretch for 5 minutes
+                    <button onclick="editTask(0)">Edit</button>
+                </li>
+                <li id="task1" class="reminder-item">
+                    <input type="checkbox" onclick="toggleTaskCompletion('task1')" /> Drink a glass of water
+                    <button onclick="editTask(1)">Edit</button>
+                </li>
+                <li id="task2" class="reminder-item">
+                    <input type="checkbox" onclick="toggleTaskCompletion('task2')" /> Check your schedule for the day
+                    <button onclick="editTask(2)">Edit</button>
+                </li>
+                <li id="task3" class="reminder-item">
+                    <input type="checkbox" onclick="toggleTaskCompletion('task3')" /> Complete your main task for today
+                    <button onclick="editTask(3)">Edit</button>
+                </li>
+                <li id="task4" class="reminder-item">
+                    <input type="checkbox" onclick="toggleTaskCompletion('task4')" /> Take a break every 2 hours
+                    <button onclick="editTask(4)">Edit</button>
+                </li>
+                <li id="task5" class="reminder-item">
+                    <input type="checkbox" onclick="toggleTaskCompletion('task5')" /> Stay active, take a walk or do some exercise
+                    <button onclick="editTask(5)">Edit</button>
+                </li>
+                <li id="task6" class="reminder-item">
+                    <input type="checkbox" onclick="toggleTaskCompletion('task6')" /> Meditate for 10 minutes
+                    <button onclick="editTask(6)">Edit</button>
+                </li>
             </ul>
         </div>
 
