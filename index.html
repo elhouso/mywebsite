@@ -18,7 +18,7 @@
             text-align: center;
         }
 
-        /* Improved Password Screen */
+        /* Password Screen Redesign */
         #lock-screen {
             position: absolute;
             width: 100%;
@@ -33,43 +33,23 @@
             z-index: 999;
         }
 
-        .login-container {
+        .lock-screen-content {
+            text-align: center;
             background: rgba(0, 0, 0, 0.7);
             padding: 40px;
             border-radius: 10px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.7);
-            text-align: center;
-            width: 300px;
             animation: slideIn 1s ease-out;
         }
 
-        .login-container h2 {
+        .lock-screen-content h2 {
             font-size: 1.5rem;
             margin-bottom: 20px;
             font-weight: bold;
             color: #ddd;
         }
 
-        .login-container input {
-            width: 100%;
-            padding: 15px;
-            margin: 10px 0;
-            border-radius: 8px;
-            border: 1px solid #444;
-            font-size: 1.1rem;
-            outline: none;
-            background: #333;
-            color: #fff;
-            transition: all 0.3s ease;
-        }
-
-        .login-container input:focus {
-            border-color: #444;
-            background: #444;
-        }
-
-        .login-container button {
-            width: 100%;
+        .lock-screen-content button {
             padding: 15px;
             background: #444;
             color: white;
@@ -80,7 +60,7 @@
             transition: transform 0.3s ease;
         }
 
-        .login-container button:hover {
+        .lock-screen-content button:hover {
             background: #555;
             transform: scale(1.05);
         }
@@ -160,15 +140,14 @@
         }
     </style>
     <script>
-        // Password screen
-        function checkPassword() {
-            var password = document.getElementById('password-field').value;
+        // Password screen (new method)
+        function unlockPage() {
+            var password = prompt("Enter the password to continue:");
             if (password === "1234") {
                 document.getElementById("content").style.display = "block";
                 document.getElementById("lock-screen").style.display = "none";
             } else {
                 alert("Incorrect password! Please try again.");
-                document.getElementById('password-field').value = ''; // Clear input field
             }
         }
 
@@ -205,13 +184,21 @@
             localStorage.setItem('tasks', JSON.stringify(tasks));
         }
 
-        // Edit tasks (localStorage workaround)
-        function editTask(index) {
-            var newTask = prompt('Edit task:', document.querySelectorAll('.reminder-item')[index].textContent);
-            if (newTask !== null) {
-                document.querySelectorAll('.reminder-item')[index].textContent = newTask;
-                saveTasks(); // Save tasks to localStorage
-            }
+        // Export tasks to .txt file
+        function exportToTxt() {
+            var tasks = [];
+            document.querySelectorAll('.reminder-item').forEach((taskElement, index) => {
+                var taskText = taskElement.textContent.trim();
+                if (taskElement.classList.contains('completed')) {
+                    taskText = "[Done] " + taskText;
+                }
+                tasks.push(taskText);
+            });
+            var textFile = new Blob([tasks.join("\n")], { type: 'text/plain' });
+            var link = document.createElement('a');
+            link.href = URL.createObjectURL(textFile);
+            link.download = "task_list.txt";
+            link.click();
         }
 
         // On page load
@@ -224,10 +211,9 @@
 
     <!-- Loading Screen -->
     <div id="lock-screen">
-        <div class="login-container">
-            <h2>Please enter the password to continue</h2>
-            <input type="password" id="password-field" placeholder="Password" />
-            <button onclick="checkPassword()">Login</button>
+        <div class="lock-screen-content">
+            <h2>Please click the button to unlock</h2>
+            <button onclick="unlockPage()">Unlock</button>
         </div>
     </div>
 
@@ -242,31 +228,24 @@
             <ul class="reminder-list">
                 <li id="task0" class="reminder-item">
                     <input type="checkbox" onclick="toggleTaskCompletion('task0')" /> Wake up and stretch for 5 minutes
-                    <button onclick="editTask(0)">Edit</button>
                 </li>
                 <li id="task1" class="reminder-item">
                     <input type="checkbox" onclick="toggleTaskCompletion('task1')" /> Drink a glass of water
-                    <button onclick="editTask(1)">Edit</button>
                 </li>
                 <li id="task2" class="reminder-item">
                     <input type="checkbox" onclick="toggleTaskCompletion('task2')" /> Check your schedule for the day
-                    <button onclick="editTask(2)">Edit</button>
                 </li>
                 <li id="task3" class="reminder-item">
                     <input type="checkbox" onclick="toggleTaskCompletion('task3')" /> Complete your main task for today
-                    <button onclick="editTask(3)">Edit</button>
                 </li>
                 <li id="task4" class="reminder-item">
                     <input type="checkbox" onclick="toggleTaskCompletion('task4')" /> Take a break every 2 hours
-                    <button onclick="editTask(4)">Edit</button>
                 </li>
                 <li id="task5" class="reminder-item">
                     <input type="checkbox" onclick="toggleTaskCompletion('task5')" /> Stay active, take a walk or do some exercise
-                    <button onclick="editTask(5)">Edit</button>
                 </li>
                 <li id="task6" class="reminder-item">
                     <input type="checkbox" onclick="toggleTaskCompletion('task6')" /> Meditate for 10 minutes
-                    <button onclick="editTask(6)">Edit</button>
                 </li>
             </ul>
         </div>
@@ -278,6 +257,7 @@
                 <a href="https://linkedin.com" target="_blank">LinkedIn</a>
                 <a href="https://github.com" target="_blank">GitHub</a>
             </div>
+            <button onclick="exportToTxt()">Export Task List to .txt</button>
         </footer>
     </div>
 
