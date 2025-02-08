@@ -63,12 +63,12 @@
     </style>
     <script>
         function checkPassword() {
-            var password = prompt("Enter the password to access this page:");
-            if (password === "1234") {
+            var password = prompt("Enter the password to access website:");
+            if (password === "1111") {
                 document.getElementById("content").style.display = "block";
                 document.getElementById("lock-screen").style.display = "none";
             } else {
-                alert("Incorrect password! Please try again.");
+                alert("Access Denied! Please try again.");
                 window.location.reload(); // Reload the page if password is incorrect
             }
         }
